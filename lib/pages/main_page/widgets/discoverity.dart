@@ -51,7 +51,7 @@ class _DiscoverityState extends State<Discoverity> {
               itemBuilder: (BuildContext context, int index) {
                 BluetoothDiscoveryResult foundDevice = discoveryResults[index];
                 return DeviceItem(
-                  deviceName: foundDevice.device.name,
+                  bluetoothDevice: foundDevice.device,
                 );
               },
             ),

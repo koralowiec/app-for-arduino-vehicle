@@ -1,3 +1,4 @@
+import 'package:app_for_arudino_vehicle/pages/drive_page.dart';
 import 'package:app_for_arudino_vehicle/pages/main_page/widgets/discoverity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -15,7 +16,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
 
-    FlutterBluetoothSerial.instance.isEnabled.then((isEnabled){
+    FlutterBluetoothSerial.instance.isEnabled.then((isEnabled) {
       setState(() {
         isBluetoothEnabled = isEnabled;
       });
@@ -37,6 +38,20 @@ class _MainPageState extends State<MainPage> {
             Visibility(
               visible: isBluetoothEnabled,
               child: Discoverity(),
+            ),
+            Visibility(
+              visible: isBluetoothEnabled,
+              child: RaisedButton(
+                child: Text('Drive the vehicle'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DrivePage(),
+                    ),
+                  );
+                },
+              ),
             )
           ],
         ),

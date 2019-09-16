@@ -1,4 +1,6 @@
+import 'package:app_for_arudino_vehicle/bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 class DeviceItem extends StatelessWidget {
@@ -40,8 +42,8 @@ class DeviceItem extends StatelessWidget {
                 child: Text('Connect'),
                 onPressed: () async {
                   print('Connect pressed');
-                  BluetoothConnection bluetoothConnection = await BluetoothConnection.toAddress(bluetoothDevice.address);
-                  print('connected ' + bluetoothConnection.isConnected.toString());
+                  final bloc = BlocProvider.of<ConnectedDeviceBloc>(context);
+                  bloc.dispatch(ConnectToDevice(device: bluetoothDevice));
                 },
               ),
             )

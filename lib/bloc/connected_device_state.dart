@@ -21,3 +21,5 @@ class ConnectedToDevice extends ConnectedDeviceState {
 }
 
 class ErrorDuringConnecting extends ConnectedDeviceState {}
+
+class Disconnected extends ConnectedDeviceState {}

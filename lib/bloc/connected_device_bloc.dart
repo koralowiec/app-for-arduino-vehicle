@@ -27,6 +27,9 @@ class ConnectedDeviceBloc
         bluetoothConnection: bluetoothConnection,
         device: event.device,
       );
+    } else if (event is DisconnectWithDevice) {
+      event.connection.finish();
+      yield Disconnected();
     }
   }
 }

@@ -5,8 +5,15 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 class DeviceItem extends StatelessWidget {
   final BluetoothDevice bluetoothDevice;
+  final bool isConnected;
+  final Function onDisconnect;
+  final bool shouldBePressingConnectBlocked;
 
-  const DeviceItem({@required this.bluetoothDevice});
+  const DeviceItem(
+      {@required this.bluetoothDevice,
+      @required this.isConnected,
+      @required this.onDisconnect,
+      @required this.shouldBePressingConnectBlocked});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +21,10 @@ class DeviceItem extends StatelessWidget {
       margin: EdgeInsets.all(16.0),
       child: GestureDetector(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   'Name: ' + bluetoothDevice.name,
@@ -31,19 +40,30 @@ class DeviceItem extends StatelessWidget {
                 child: Text('Pair'),
                 onPressed: () async {
                   print('Pair pressed');
-                  bool paired = await FlutterBluetoothSerial.instance.bondDeviceAtAddress(bluetoothDevice.address);
+                  bool paired = await FlutterBluetoothSerial.instance
+                      .bondDeviceAtAddress(bluetoothDevice.address);
                   print('paired ' + paired.toString());
                 },
               ),
             ),
             Visibility(
-              visible: !bluetoothDevice.isConnected && bluetoothDevice.isBonded,
+              visible: !isConnected && bluetoothDevice.isBonded,
               child: RaisedButton(
                 child: Text('Connect'),
                 onPressed: () async {
-                  print('Connect pressed');
-                  final bloc = BlocProvider.of<ConnectedDeviceBloc>(context);
-                  bloc.dispatch(ConnectToDevice(device: bluetoothDevice));
+                  if (!shouldBePressingConnectBlocked) {
+                    final bloc = BlocProvider.of<ConnectedDeviceBloc>(context);
+                    bloc.dispatch(ConnectToDevice(device: bluetoothDevice));
+                  }
+                },
+              ),
+            ),
+            Visibility(
+              visible: isConnected,
+              child: RaisedButton(
+                child: Text('Disconnect'),
+                onPressed: () async {
+                  onDisconnect();
                 },
               ),
             )

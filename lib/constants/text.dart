@@ -1,2 +1,2 @@
-const showDiscovered = 'Show dicovered devices';
+const showDiscovered = 'Start discovering devices';
 const hideDiscovered = 'Hide dicovered devices';

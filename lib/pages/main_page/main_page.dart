@@ -13,6 +13,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   bool isBluetoothEnabled = false;
   bool areDiscoveredDevicesShown = false;
+  BluetoothConnection _connection;
 
   @override
   void initState() {
@@ -26,73 +27,112 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
+  void dispose() {
+    print('dispose()');
+    print('Connection: ${_connection.toString()}');
+    _connection.finish();
+    print('Is connected: ${_connection.isConnected}');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-          child: ListView(
+      body: BlocListener<ConnectedDeviceBloc, ConnectedDeviceState>(
+        listener: (context, state) {
+          if (state is ConnectedToDevice) {
+            setState(() {
+              _connection = state.bluetoothConnection;
+            });
+          }
+        },
+        child: SafeArea(
+          child: Column(
             children: <Widget>[
-              SwitchListTile(
-                title: Text('Enable Bluetooth'),
-                onChanged: onEnableBluetoothChange,
-                value: isBluetoothEnabled,
+              Expanded(
+                flex: 4,
+                child: ListView(
+                  children: <Widget>[
+                    SwitchListTile(
+                      title: Text('Enable Bluetooth'),
+                      onChanged: onEnableBluetoothChange,
+                      value: isBluetoothEnabled,
+                    ),
+                    Divider(),
+                    Visibility(
+                      visible: isBluetoothEnabled,
+                      child: Discoverity(),
+                    ),
+                  ],
+                ),
               ),
               Divider(),
-              Visibility(
-                visible: isBluetoothEnabled,
-                child: Discoverity(),
-              ),
-              BlocBuilder<ConnectedDeviceBloc, ConnectedDeviceState>(
-                builder: (context, state) {
-                  if (state is InitialConnectedDeviceState) {
-                    return Container(
-                      child: Text('None device is connected'),
-                    );
-                  } else if (state is ConnectingToDevice) {
-                    return Container(
-                      child: Row(
+              Expanded(
+                flex: 1,
+                child: BlocBuilder<ConnectedDeviceBloc, ConnectedDeviceState>(
+                  builder: (context, state) {
+                    if (state is InitialConnectedDeviceState ||
+                        state is Disconnected) {
+                      return Center(
+                        child: Text('None device is connected'),
+                      );
+                    } else if (state is ConnectingToDevice) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text('Connecting to device...'),
+                          SizedBox(
+                            width: 10.0,
+                          ),
                           CircularProgressIndicator(),
                         ],
-                      ),
-                    );
-                  } else if (state is ConnectedToDevice) {
-                    String deviceAddress = state.device.address;
-                    String deviceName = state.device.name;
-                    return Container(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                              'Connected to device: $deviceName address: $deviceAddress'),
-                          RaisedButton(
-                            child: Text('Drive the vehicle'),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DrivePage(),
-                                ),
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    );
-                  } else if (state is ErrorDuringConnecting) {
-                    return Container(
-                      child: Text('During connecting occured an error!'),
-                    );
-                  }
+                      );
+                    } else if (state is ConnectedToDevice) {
+                      String deviceAddress = state.device.address;
+                      String deviceName = state.device.name;
+                      return Container(
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              'Connected to device: $deviceName',
+                            ),
+                            Text(
+                              'Device address: $deviceAddress',
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            RaisedButton(
+                              child: Text('Drive the vehicle'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DrivePage(),
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      );
+                    } else if (state is ErrorDuringConnecting) {
+                      return Container(
+                        child: Text('During connecting occured an error!'),
+                      );
+                    }
 
-                  return Container(
-                    child: Text('This should not be shown'),
-                  );
-                },
+                    return Container(
+                      child: Text('This should not be shown'),
+                    );
+                  },
+                ),
               ),
             ],
           ),
         ),
-      );
+      ),
+    );
   }
 
   onEnableBluetoothChange(value) async {

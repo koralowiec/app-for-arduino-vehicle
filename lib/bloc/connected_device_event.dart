@@ -12,3 +12,9 @@ class ConnectToDevice extends ConnectedDeviceEvent {
 
   ConnectToDevice({@required this.device}) : super([device]);
 }
+
+class DisconnectWithDevice extends ConnectedDeviceEvent {
+  final BluetoothConnection connection;
+
+  DisconnectWithDevice({this.connection}) : super([connection]);
+}

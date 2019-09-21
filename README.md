@@ -1,16 +1,4 @@
-# app_for_arudino_vehicle
+# App For Arudino Vehicle
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Application written in Flutter for driving simple [Arduino Vehicle](https://github.com/Ar3q/arduino-vehicle).
+App provides ability to connect to Bluetooth device and then send information how should vehcile ride (depending on the pressed buttons).

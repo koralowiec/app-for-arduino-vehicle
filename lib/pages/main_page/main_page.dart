@@ -124,7 +124,10 @@ class _MainPageState extends State<MainPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => DriveWithSensorsPage(),
+                                        builder: (context) =>
+                                            DriveWithSensorsPage(
+                                          connection: _connection,
+                                        ),
                                       ),
                                     );
                                   },

@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:app_for_arudino_vehicle/pages/drive_page/enums/arrow_types.dart';
-import 'package:app_for_arudino_vehicle/pages/drive_page/widgets/arrow_button.dart';
+import 'package:app_for_arudino_vehicle/pages/drive_with_buttons/enums/arrow_types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+
+import 'arrow_button.dart';
 
 class Arrows extends StatefulWidget {
   final BluetoothConnection bluetoothConnection;

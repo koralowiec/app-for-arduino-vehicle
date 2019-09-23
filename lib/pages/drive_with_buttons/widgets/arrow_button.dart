@@ -1,4 +1,4 @@
-import 'package:app_for_arudino_vehicle/pages/drive_page/enums/arrow_types.dart';
+import 'package:app_for_arudino_vehicle/pages/drive_with_buttons/enums/arrow_types.dart';
 import 'package:flutter/material.dart';
 
 class ArrowButton extends StatelessWidget {

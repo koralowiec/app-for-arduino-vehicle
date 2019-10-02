@@ -1,5 +1,6 @@
 import 'package:app_for_arudino_vehicle/bloc/bloc.dart';
-import 'package:app_for_arudino_vehicle/pages/drive_page/drive_page.dart';
+import 'package:app_for_arudino_vehicle/pages/drive_with_buttons/drive_page.dart';
+import 'package:app_for_arudino_vehicle/pages/drive_with_sensors/drive_with_sensors_page.dart';
 import 'package:app_for_arudino_vehicle/pages/main_page/widgets/discoverity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,19 +101,39 @@ class _MainPageState extends State<MainPage> {
                               'Device address: $deviceAddress',
                             ),
                             SizedBox(
-                              height: 10.0,
+                              height: 5.0,
                             ),
-                            RaisedButton(
-                              child: Text('Drive the vehicle'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DrivePage(),
-                                  ),
-                                );
-                              },
-                            )
+                            Text('Drive the vehicle with:'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                RaisedButton(
+                                  child: Text('buttons'),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DrivePage(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                RaisedButton(
+                                  child: Text('gyroscope'),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            DriveWithSensorsPage(
+                                          connection: _connection,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       );
